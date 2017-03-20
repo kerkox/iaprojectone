@@ -43,12 +43,25 @@ public class Model_Mundo {
     private int cols;
     
     public byte move_position = FREE;
+    
+    private static Model_Mundo m_md;
 
-    public Model_Mundo(int lve, byte[][] matriz, Integer shoot) {
+    private Model_Mundo() {
+        
+    }
+    
+    public void modifi_attr(int lve, byte[][] matriz, Integer shoot){
         this.disparos = shoot;
         this.environment = matriz;
         this.level = lve;
         this.initGame(level, environment);
+    }
+    
+    public static Model_Mundo getInstance(){
+         if (m_md == null){
+            m_md = new Model_Mundo();
+        }
+        return m_md;
     }
 
 //    private ResourceBundle bundle = ResourceBundle.getBundle("afjb/project/levels/levels");

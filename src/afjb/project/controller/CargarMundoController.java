@@ -73,8 +73,8 @@ public class CargarMundoController implements Initializable {
 //            alerta.setHeaderText(msg);
 //            alerta.showAndWait();
 
-            Model_Mundo modelo = new Model_Mundo(0, environment, disparos);
-
+            Model_Mundo modelo = Model_Mundo.getInstance();
+            modelo.modifi_attr(0, environment, disparos);
             Map<String, Object> params = new HashMap<>();
             params.put("modelo", modelo);
             NavigatorController navigatorController = (NavigatorController) this.contenedor.getUserData();

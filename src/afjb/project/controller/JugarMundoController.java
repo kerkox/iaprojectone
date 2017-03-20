@@ -49,11 +49,12 @@ public class JugarMundoController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.option_algotihm.getItems().add(new Label("Busqueda Informada"));
         this.option_algotihm.getItems().add(new Label("Busqueda no Informada"));
+        this.modelo = Model_Mundo.getInstance();
+        this.envivorement = modelo.getEnvironment();
+        dibujar();
     }
     
     public void dibujar() {
-//        this.modelo = (Model_Mundo) ((Map) this.contenedor.getProperties().get("params")).get("modelo");
-//        this.envivorement = modelo.getEnvironment();
 
         for (int j = 0; j < 10; j++) {
             for (int k = 0; k < 10; k++) {
