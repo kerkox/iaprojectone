@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.stage.*?>
+<?import javafx.event.*?>
+
+<VBox fx:id="contenedor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="513.0" stylesheets="@principal_view.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="afjb.project.controller.PrincipalController">
+   <children>
+      <HBox alignment="CENTER">
+         <children>
+            <Label text="Robot Sapiens" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="OpenSymbol" size="30.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <JFXButton fx:id="jugar_level" buttonType="RAISED" styleClass="button-raised" text="Jugar">
+               <font>
+                  <Font name="Lucida Sans Regular" size="17.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </JFXButton>
+         </children>
+         <VBox.margin>
+            <Insets top="35.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <JFXButton fx:id="btn_cargar_mundo" buttonType="RAISED" onAction="#cambiar_view" styleClass="button-raised" text="Cragar Mundo">
+               <font>
+                  <Font name="Lucida Sans Regular" size="17.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </JFXButton>
+         </children>
+         <VBox.margin>
+            <Insets top="35.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

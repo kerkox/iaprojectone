@@ -1,0 +1,23 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 19, 2017, 8:02:22 PM
+    Author     : USER
+*/
+
+.button-raised{
+    -fx-padding: 0.7em 0.57em;
+    -fx-font-size: 14px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: rgba(132, 27, 35, 0.8);
+    -fx-pref-width: 200;
+    -fx-text-fill: WHITE;
+}
+
+
+.button-raised:hover{
+    -fx-background-color: #d50000;
+}

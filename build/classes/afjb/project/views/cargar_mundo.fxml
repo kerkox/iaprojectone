@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.net.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.net.URL?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+
+<VBox fx:id="contenedor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="657.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="afjb.project.controller.CargarMundoController">
+    <stylesheets>
+        <URL value="@caragar_mundo.css" />
+    </stylesheets>
+    <children>
+        <HBox alignment="CENTER">
+            <children>
+                <Label text="Cargar mapa del mundo">
+                    <font>
+                        <Font name="Lucida Sans Regular" size="17.0" />
+                    </font>
+                </Label>
+            </children>
+            <VBox.margin>
+                <Insets top="55.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER">
+            <children>
+                <HBox>
+                    <children>
+                        <JFXButton buttonType="RAISED" onAction="#leer_archivo" styleClass="button-raised" text="Seleccionar Archivo">
+                        </JFXButton>
+                    </children>
+                    <padding>
+                        <Insets right="30.0" />
+                    </padding>
+                </HBox>
+                <JFXTextField fx:id="nombre_archivo" editable="false" prefHeight="25.0" prefWidth="221.0" style="-fx-padding-left: 30px;">
+                </JFXTextField>
+            </children>
+            <VBox.margin>
+                <Insets top="55.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="334.0" prefWidth="657.0">
+            <VBox.margin>
+                <Insets top="30.0" />
+            </VBox.margin>
+            <children>
+                <Pane fx:id="pantalla_scena" maxHeight="305.0" prefHeight="116.0" prefWidth="305.0" style="-fx-background-color: #ffffffff;">
+                    <effect>
+                        <DropShadow blurType="GAUSSIAN" />
+                    </effect>
+                </Pane>
+                <VBox alignment="CENTER" prefHeight="305.0" prefWidth="223.0">
+                    <children>
+                        <Label fx:id="no_disparos_label" alignment="CENTER" prefHeight="67.0" prefWidth="225.0" text="No de Disparos" textAlignment="CENTER" visible="false">
+                            <font>
+                                <Font name="Lucida Sans Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="numero_disparos_pan" alignment="CENTER" prefHeight="43.0" prefWidth="227.0" textAlignment="CENTER">
+                            <font>
+                                <Font name="Lucida Sans Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <JFXButton onAction="#jugar_mundo"  fx:id="btn_jugar" buttonType="RAISED" disable="true" styleClass="button-raised" text="Jugar" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>
