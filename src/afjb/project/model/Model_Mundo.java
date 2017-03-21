@@ -10,6 +10,8 @@ import afjb.project.event.NewInterface;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import javax.swing.JOptionPane;
 
@@ -31,6 +33,8 @@ public class Model_Mundo {
     public static final int DOWN = 3;
     
     public Integer disparos;
+    
+    public byte cant_item, cant_ini;
 
     private byte[][] environment; // entorno - matriz que representa el juego
 
@@ -51,10 +55,19 @@ public class Model_Mundo {
     }
     
     public void modifi_attr(int lve, byte[][] matriz, Integer shoot){
-        this.disparos = shoot;
-        this.environment = matriz;
-        this.level = lve;
-        this.initGame(level, environment);
+        try {
+            this.disparos = shoot;
+            this.environment = matriz;
+            this.level = lve;
+            this.initGame(level, environment);
+        } catch (Exception ex) {
+            Logger.getLogger(Model_Mundo.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
+            alerta.setAlertType(Alert.AlertType.INFORMATION);
+            alerta.setHeaderText(ex.getMessage());
+            alerta.showAndWait();
+        }
     }
     
     public static Model_Mundo getInstance(){
@@ -66,7 +79,7 @@ public class Model_Mundo {
 
 //    private ResourceBundle bundle = ResourceBundle.getBundle("afjb/project/levels/levels");
 
-    public void initGame(int level, byte[][] mundo) {
+    public void initGame(int level, byte[][] mundo) throws Exception {
         
         if(mundo != null){
             
@@ -75,12 +88,21 @@ public class Model_Mundo {
                     if(mundo[i][j] == ROBOT_SAPIENS){
                         this.pi = i;
                         this.pj = j;
+                        cant_ini ++;
                     }
                     if(mundo[i][j] == ITEM){
                         this.ii = i;
                         this.ij = j;
+                        cant_item ++;
                     }
                 }
+            }
+            
+            if(cant_ini > 1){
+                throw new Exception("no puede haber mas de una posicion de inicio");
+            }
+            if(cant_item > 1){
+                throw new Exception("no puede haber mas de una meta");
             }
             
         }else {

@@ -26,10 +26,11 @@ public class Nodo {
     public int operador;
     public int profundidad;
     public int costo;
-    public Integer disparos;
+    public int disparos;
     public boolean visitiadoAnchura[];
+    public int[] orden_movimiento = {LEFT, UP, RIGHT, DOWN};
 
-    public Nodo(byte[][] puzzle, Nodo padre, int operador, int profundidad, int costo, int ii, int ij, int pi, int pj) {
+    public Nodo(byte[][] puzzle, Nodo padre, int operador, int profundidad, int costo, int ii, int ij, int pi, int pj, int disparos) {
         this.puzzle = puzzle;
         this.padre = padre;
         this.operador = operador;
@@ -39,6 +40,7 @@ public class Nodo {
         this.pi = pi;
         this.pj = pj;
         this.ij = ij;
+        this.disparos = disparos;
     }
 
     public Nodo mover(int direccion) {
@@ -50,6 +52,7 @@ public class Nodo {
         
         int hcosto = this.costo;
         
+        int hdisparos = this.disparos;
 
         hijo_puzzle[hpi][hpj] = this.move_position;
 
@@ -70,29 +73,25 @@ public class Nodo {
                 hpi++;
                 break;
         }
-
-        if (hpj == hijo_puzzle[0].length) {
-            hpj = 0;
+        
+        if(hijo_puzzle[hpi][hpj] == FREE){
+            hcosto++;
+        }
+        
+        if(hijo_puzzle[hpi][hpj] == ROBOT_ENEMIGO){
+            if(hdisparos == 0){
+                hcosto += 5; 
+            }else{
+                hdisparos--;
+                costo++;
+            }
+        }
+        
+        if(hijo_puzzle[hpi][hpj] == OBSTACULO){
+            return null;
         }
 
-        if (hpj == -1) {
-            hpj = hijo_puzzle[0].length - 1;
-        }
-
-        if (hpi == getRows()) {
-            hpi = 0;
-        }
-
-        if (hpi == -1) {
-            hpi = getRows() - 1;
-        }
-
-        if (this.get(hpi, hpj) == OBSTACULO) {
-            hpi = oldPi;
-            hpj = oldPj;
-        }
-
-        if (this.get(hpi, hpj) == ITEM) {
+        if (hijo_puzzle[hpi][hpj] == ITEM) {
 //            this.notifyChange(new CambioEvent(this));
             Alert alerta = new Alert(Alert.AlertType.ERROR);
             alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
@@ -102,10 +101,11 @@ public class Nodo {
             alerta.showAndWait();
         }
         
-        this.move_position = hijo_puzzle[hpi][hpj];
+        
         hijo_puzzle[hpi][hpj] = ROBOT_SAPIENS;
         
-        Nodo hijo = new Nodo(hijo_puzzle, this, direccion, (this.profundidad++), hcosto, this.ii, this.ij, hpi, hpj);
+        Nodo hijo = new Nodo(hijo_puzzle, this, direccion, (this.profundidad++), hcosto, this.ii, this.ij, hpi, hpj, hdisparos);
+        hijo.setMove_position(hijo_puzzle[hpi][hpj]);
         return hijo;
     }
 
@@ -136,6 +136,8 @@ public class Nodo {
     public int get(int row, int col) {
         return this.puzzle[row][col];
     }
+    
+    
 
 //    public ArrayList<Nodo> recorridoAnchura(Nodo nodoI) {
 //        ArrayList<Integer> recorridos = new ArrayList<Integer>();
@@ -155,5 +157,9 @@ public class Nodo {
 //        }
 //        return recorridos;
 //    }
+
+    public void setMove_position(byte move_position) {
+        this.move_position = move_position;
+    }
 
 }
