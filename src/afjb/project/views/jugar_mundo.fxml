@@ -37,7 +37,7 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="394.0" prefWidth="600.0">
          <children>
-            <Pane fx:id="mundo_juego_pan" maxHeight="300.0" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #fff;">
+            <Pane fx:id="mundo_juego_pan" maxHeight="300.0" onKeyPressed="#animation_test" prefHeight="300.0" prefWidth="300.0" style="-fx-background-color: #fff;">
                <HBox.margin>
                   <Insets top="30.0" />
                </HBox.margin>

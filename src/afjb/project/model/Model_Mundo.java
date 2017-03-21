@@ -35,7 +35,7 @@ public class Model_Mundo {
     private byte[][] environment; // entorno - matriz que representa el juego
 
     // posicion inicial
-    private int pi, pj;
+    private int pi, pj, ii, ij;
 
     private int level;
 
@@ -75,6 +75,10 @@ public class Model_Mundo {
                     if(mundo[i][j] == ROBOT_SAPIENS){
                         this.pi = i;
                         this.pj = j;
+                    }
+                    if(mundo[i][j] == ITEM){
+                        this.ii = i;
+                        this.ij = j;
                     }
                 }
             }
@@ -138,10 +142,10 @@ public class Model_Mundo {
                 this.pj--;
                 break;
             case UP:
-                this.pi++;
+                this.pi--;
                 break;
             case DOWN:
-                this.pi--;
+                this.pi++;
                 break;
         }
 

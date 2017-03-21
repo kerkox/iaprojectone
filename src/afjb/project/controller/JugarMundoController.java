@@ -10,10 +10,12 @@ import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -51,15 +53,35 @@ public class JugarMundoController implements Initializable {
         this.option_algotihm.getItems().add(new Label("Busqueda no Informada"));
         this.modelo = Model_Mundo.getInstance();
         this.envivorement = modelo.getEnvironment();
+        this.mundo_juego_pan.setFocusTraversable(true);
         dibujar();
     }
     
+    @FXML
+    void animation_test(KeyEvent evt) {
+//        if(evt.getCode().equals(evt.getCode().UP)){
+//            this.modelo.move(this.modelo.UP);
+//        }
+//        if(evt.getCode().equals(evt.getCode().DOWN)){
+//            this.modelo.move(this.modelo.DOWN);
+//        }
+//        if(evt.getCode().equals(evt.getCode().RIGHT)){
+//            this.modelo.move(this.modelo.RIGHT);
+//        }
+//        if(evt.getCode().equals(evt.getCode().LEFT)){
+//            this.modelo.move(this.modelo.LEFT);
+//        }
+//        dibujar();
+    }
+    
     public void dibujar() {
+        
+        mundo_juego_pan.getChildren().removeAll(mundo_juego_pan.getChildren());
 
         for (int j = 0; j < 10; j++) {
             for (int k = 0; k < 10; k++) {
                 Rectangle cuadro = new Rectangle(30, 30);
-                switch (this.envivorement[j][k]) {
+                switch (this.modelo.getEnvironment()[j][k]) {
                     case 0:
                         cuadro.setFill(Color.WHITE);
                         cuadro.setX(k * 30);
@@ -122,6 +144,7 @@ public class JugarMundoController implements Initializable {
             this.option_selected_algorithm.getItems().add("Avara");
             this.option_selected_algorithm.getItems().add("A*");
             this.option_selected_algorithm.setDisable(false);
+            this.mundo_juego_pan.requestFocus();
             this.option_selected_algorithm.requestFocus();
         }
         if (seleccion.getText().equals("Busqueda no Informada")) {
@@ -131,6 +154,7 @@ public class JugarMundoController implements Initializable {
             this.option_selected_algorithm.getItems().add("Costo Uniforme");
             this.option_selected_algorithm.getItems().add("Profundidad Evitando Ciclos");
             this.option_selected_algorithm.setDisable(false);
+            this.mundo_juego_pan.requestFocus();
             this.option_selected_algorithm.requestFocus();
         }
     }
