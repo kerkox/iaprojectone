@@ -21,7 +21,7 @@ public class Nodo {
 
     public int pi, pj, ii, ij;
 
-    public byte puzzle[][];
+    public byte[][] puzzle;
     public Nodo padre;
     public int operador;
     public int profundidad;
@@ -42,7 +42,11 @@ public class Nodo {
         this.disparos = disparos;
     }
 
-    public Nodo mover(int direccion) {
+    public Integer mover(int direccion) {
+        
+        System.out.println("puzzle original");
+        this.verPuzzle();
+        System.out.println(" ");
         
         System.out.println("dirreccion de movimien " + direccion);
         
@@ -50,85 +54,84 @@ public class Nodo {
         
         if (get(pi, pj) == get(ii, ij)) {
             System.out.println("encontro la meta");
-            return this;
+            return 0;
         }
         
-        System.out.println("valor de pj" + pj);
+        System.out.println("valor de pj" + this.pj);
         
-        System.out.println("valor de pi" + pi);
+        System.out.println("valor de pi" + this.pi);
+        
+        System.out.println("puzle hijo");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                System.out.print(" " + this.puzzle[i][j]);
+            }
 
-        int hpi = pi;
-        int hpj = pj;
+            System.out.println(" ");
+        }
+        System.out.println(" ");
 
-        byte[][] hijo_puzzle = this.puzzle;
-
-        int hcosto = this.costo;
-
-        int hdisparos = this.disparos;
-
-        hijo_puzzle[hpi][hpj] = this.move_position;
-
-        int oldPj = hpj;
-        int oldPi = hpi;
+        int oldPj = this.pj;
+        int oldPi = this.pi;
 
         switch (direccion) {
             case RIGHT:
                 System.out.println("mover a la derecha");
-                hpj++;
+                this.pj++;
                 break;
             case LEFT:
                 System.out.println("mover a la izquierda");
-                hpj--;
+                this.pj--;
                 break;
             case UP:
                 System.out.println("mover arriba");
-                hpi--;
+                this.pi--;
                 break;
             case DOWN:
                 System.out.println("mover abajo");
-                hpi++;
+                this.pi++;
                 break;
         }
         
-        System.out.println("valor de pj movido" + hpj);
+        System.out.println("valor de pj movido" + this.pj);
         
-        System.out.println("valor de pi movido" + hpi);
+        System.out.println("valor de pi movido" + this.pi);
 
-        if (hpj == this.getCols()) {
+        if (this.pj == this.getCols()) {
             System.out.println("hpj sobre paso las columnas");
-            return null;
+            return 1;
         }
 
-        if (hpj == -1) {
+        if (this.pj == -1) {
             System.out.println("hpj es menor que las columas");
-            return null;
+            return 1;
         }
 
-        if (hpi == this.getRows()) {
+        if (this.pi == this.getRows()) {
             System.out.println("hpi sobre paso las filas");
-            return null;
+            return 1;
         }
 
-        if (hpi == -1) {
+        if (this.pi == -1) {
             System.out.println("hpi es menor que las filas ");
-            return null;
+            return 1;
         }
 
-        if (hijo_puzzle[hpi][hpj] == FREE) {
-            hcosto++;
+        if (puzzle[this.pi][this.pj] == FREE) {
+            this.costo++;
         }
 
-        if (hijo_puzzle[hpi][hpj] == ROBOT_ENEMIGO) {
-            if (hdisparos == 0) {
-                hcosto += 5;
+        if (puzzle[this.pi][this.pj] == ROBOT_ENEMIGO) {
+            if (this.disparos == 0) {
+                this.costo += 5;
             } else {
-                hdisparos--;
-                hcosto++;
+                this.disparos--;
+                this.costo++;
             }
         }
 
-        if (hijo_puzzle[hpi][hpj] == OBSTACULO) {
-            return null;
+        if (puzzle[this.pi][this.pj] == OBSTACULO) {
+            return 1;
         }
 
 //        if (hijo_puzzle[hpi][hpj] == ITEM) {
@@ -139,16 +142,36 @@ public class Nodo {
 //            alerta.setHeaderText(msg);
 //            alerta.showAndWait();
 //        }
+        
+        puzzle[oldPi][oldPj] = this.move_position;
+        
+        this.move_position = this.puzzle[pi][pj];
 
-        System.out.println("valor nuevo de move position " + hijo_puzzle[hpi][hpj]);
-        byte nuevo_move_position = hijo_puzzle[hpi][hpj];
-        hijo_puzzle[hpi][hpj] = ROBOT_SAPIENS;
+        System.out.println("valor nuevo de move position " + puzzle[this.pi][this.pj]);
+        
+        byte nuevo_move_position = puzzle[this.pi][this.pj];
+        
+        puzzle[this.pi][this.pj] = ROBOT_SAPIENS;
+        
+        return 2;
 
-        Nodo hijo = new Nodo(hijo_puzzle, this, direccion, (this.profundidad++), hcosto, this.ii, this.ij, hpi, hpj, hdisparos);
+    }
+    
+    public Nodo create_nodo(int i){
+        Nodo hijo = new Nodo(this.puzzle, this, i, (this.profundidad++), this.costo, this.ii, this.ij, this.pi, this.pj, this.disparos);
+        Integer verificar = hijo.mover(i);
+        if(verificar == 0){
+            return hijo;
+        }
+        if(verificar == 1){
+            return null;
+        }
         System.out.println(" ");
         hijo.verPuzzle();
         System.out.println(" ");
-        hijo.setMove_position(nuevo_move_position);
+        System.out.println("puzzle original movido");
+        this.verPuzzle();
+        System.out.println(" ");
         return hijo;
     }
 
@@ -181,12 +204,13 @@ public class Nodo {
     }
 
     public int getCols() {
-        return this.puzzle.length;
+        return this.puzzle[0].length;
     }
 
     public int get(int row, int col) {
         return this.puzzle[row][col];
     }
+    
 
 //    public ArrayList<Nodo> recorridoAnchura(Nodo nodoI) {
 //        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
@@ -206,17 +230,21 @@ public class Nodo {
 //        }
 //        return recorridos;
 //    }
-    public ArrayList<Nodo> recorridoAnchura() {
+    public ArrayList<Nodo> recorridoAnchura() throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
         cola.add(this);
         Nodo solucion_nodo = null;
         while (!cola.isEmpty()) {
-            Nodo j = cola.remove(0);
+            Nodo nodo_j = cola.remove(0);
             for (int i = 0; i < 4; i++) {
-                Nodo nh = j.mover(i);
-                if (nh != null && nh != j.getPadre()) {
-                    if (nh.equals(j)) {
+                Nodo nh = nodo_j.create_nodo(i);
+                if (nh != null && nh != nodo_j.getPadre()) {
+                    System.out.println(" ");
+                    System.out.println("puzzle nh");
+                    nh.verPuzzle();
+                    System.out.println(" ");
+                    if (nh.equals(nodo_j)) {
                         solucion_nodo = nh;
                         break;
                     }else{
@@ -240,6 +268,10 @@ public class Nodo {
 
     public Nodo getPadre() {
         return padre;
+    }
+
+    public byte[][] getPuzzle() {
+        return puzzle;
     }
 
     public int getOperador() {

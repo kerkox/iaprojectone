@@ -143,7 +143,7 @@ public class JugarMundoController implements Initializable {
     }
     
     @FXML
-    public void aplicar_busqueda(){
+    public void aplicar_busqueda() throws CloneNotSupportedException{
         Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
         nodo_raiz.recorridoAnchura();
 //        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);

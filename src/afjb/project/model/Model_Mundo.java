@@ -201,6 +201,7 @@ public class Model_Mundo {
             alerta.setHeaderText(msg);
             alerta.showAndWait();
         }
+        
         this.move_position = this.environment[pi][pj];
         this.environment[pi][pj] = ROBOT_SAPIENS;
 
