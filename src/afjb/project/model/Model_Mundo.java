@@ -225,6 +225,24 @@ public class Model_Mundo {
         this.listeners.add(l);
     }
 
+    public int getPi() {
+        return pi;
+    }
+
+    public int getPj() {
+        return pj;
+    }
+
+    public int getIi() {
+        return ii;
+    }
+
+    public int getIj() {
+        return ij;
+    }
+    
+    
+
     public void removeNewInterface(NewInterface l) {
         this.listeners.remove(l);
     }

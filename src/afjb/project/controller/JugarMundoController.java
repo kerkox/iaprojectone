@@ -6,8 +6,11 @@
 package afjb.project.controller;
 
 import afjb.project.model.Model_Mundo;
+import afjb.project.model.Nodo;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -39,6 +42,9 @@ public class JugarMundoController implements Initializable {
 
     @FXML
     private Pane mundo_juego_pan;
+    
+    @FXML
+    private JFXButton btn_aplica_algorithm;
 
     public Model_Mundo modelo;
 
@@ -134,6 +140,16 @@ public class JugarMundoController implements Initializable {
             mundo_juego_pan.getChildren().add(line_pro_1);
             mundo_juego_pan.getChildren().add(line_pro_2);
         }
+    }
+    
+    @FXML
+    public void aplicar_busqueda(){
+        Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
+        nodo_raiz.recorridoAnchura();
+//        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);
+//        for (Nodo recorrido : recorridos) {
+//            recorrido.verPuzzle();
+//        }
     }
 
     public void select_algorithm_action() {

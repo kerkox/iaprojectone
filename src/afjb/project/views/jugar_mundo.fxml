@@ -23,7 +23,7 @@
                <children>
                   <JFXComboBox fx:id="option_algotihm" focusColor="#d50000" labelFloat="true" layoutX="20.0" layoutY="69.0" onAction="#select_algorithm_action" prefHeight="25.0" prefWidth="259.0" promptText="Seleccione un Algoritmo" />
                   <JFXComboBox fx:id="option_selected_algorithm" disable="true" focusColor="#d50000" labelFloat="true" layoutX="20.0" layoutY="121.0" prefHeight="25.0" prefWidth="259.0" />
-                  <JFXButton fx:id="btn_aplica_algorithm" buttonType="RAISED" layoutX="362.0" layoutY="94.0" styleClass="button-raised" text="Aplicar" textAlignment="CENTER">
+                  <JFXButton fx:id="btn_aplica_algorithm" onAction="#aplicar_busqueda"  buttonType="RAISED" layoutX="362.0" layoutY="94.0" styleClass="button-raised" text="Aplicar" textAlignment="CENTER">
                      <font>
                         <Font name="Lucida Sans Regular" size="16.0" />
                      </font>
