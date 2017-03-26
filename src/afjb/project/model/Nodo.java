@@ -175,6 +175,32 @@ public class Nodo {
         return hijo;
     }
 
+    public byte getMove_position() {
+        return move_position;
+    }
+
+    public int getPi() {
+        return pi;
+    }
+
+    public int getPj() {
+        return pj;
+    }
+
+    public int getProfundidad() {
+        return profundidad;
+    }
+
+    public int getCosto() {
+        return costo;
+    }
+
+    public int getDisparos() {
+        return disparos;
+    }
+    
+    
+
     public int getIi() {
         return ii;
     }

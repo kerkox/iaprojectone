@@ -145,11 +145,65 @@ public class JugarMundoController implements Initializable {
     @FXML
     public void aplicar_busqueda() throws CloneNotSupportedException{
         Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
-        nodo_raiz.recorridoAnchura();
+        recorridoAnchura(nodo_raiz);
 //        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);
 //        for (Nodo recorrido : recorridos) {
 //            recorrido.verPuzzle();
 //        }
+    }
+    
+    public Nodo create_nodo(int i, Nodo nodo_expandir){
+        Nodo hijo = new Nodo(nodo_expandir.getPuzzle(), nodo_expandir, i, (nodo_expandir.getProfundidad() + 1), nodo_expandir.getCosto(), nodo_expandir.getIi(), nodo_expandir.getIj(), nodo_expandir.getPi(), nodo_expandir.getPj(), nodo_expandir.getDisparos());
+        Integer verificar = hijo.mover(i);
+        if(verificar == 0){
+            return hijo;
+        }
+        if(verificar == 1){
+            return null;
+        }
+        System.out.println(" ");
+        hijo.verPuzzle();
+        System.out.println(" ");
+        System.out.println("puzzle original movido");
+        nodo_expandir.verPuzzle();
+        System.out.println(" ");
+        return hijo;
+    }
+    
+     public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
+        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
+        ArrayList<Nodo> cola = new ArrayList<Nodo>();
+        cola.add(nodo_padre);
+        Nodo solucion_nodo = null;
+        while (!cola.isEmpty()) {
+            Nodo nodo_j = cola.remove(0);
+            for (int i = 0; i < 4; i++) {
+                Nodo nh = create_nodo(i, nodo_j);
+                if (nh != null && nh != nodo_j.getPadre()) {
+                    System.out.println(" ");
+                    System.out.println("puzzle nh");
+                    nh.verPuzzle();
+                    System.out.println(" ");
+                    if (nh.equals(nodo_j)) {
+                        solucion_nodo = nh;
+                        break;
+                    }else{
+                        cola.add(nh);
+                    }
+                }
+            }
+        }
+//        boolean termino = false;
+        recorridos.add(solucion_nodo);
+//        while (termino == false) {
+//            solucion_nodo = solucion_nodo.getPadre();
+//            if (solucion_nodo == null) {
+//                termino = true;
+//            } else {
+//                recorridos.add(solucion_nodo);
+//            }
+//        }
+        return recorridos;
     }
 
     public void select_algorithm_action() {
