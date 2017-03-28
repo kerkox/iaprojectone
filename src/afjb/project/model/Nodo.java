@@ -4,7 +4,7 @@ import afjb.project.event.CambioEvent;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 
-public class Nodo {
+public class Nodo implements Cloneable{
 
     public static final byte FREE = 0;
     public static final byte OBSTACULO = 1;
@@ -236,6 +236,13 @@ public class Nodo {
     public int get(int row, int col) {
         return this.puzzle[row][col];
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Nodo clon = new Nodo(this.puzzle, this.padre, this.operador, this.profundidad, this.costo, this.ii, this.ij, this.pi, this.pj, this.disparos);
+        return clon;
+    }
+    
     
 
 //    public ArrayList<Nodo> recorridoAnchura(Nodo nodoI) {

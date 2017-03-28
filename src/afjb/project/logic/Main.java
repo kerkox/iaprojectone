@@ -36,7 +36,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-          Parent root = new VBox(new Button());
+//          Parent root = new VBox(new Button());
 //        root.autosize();
 //        Scene scene = new Scene(root);
         try {

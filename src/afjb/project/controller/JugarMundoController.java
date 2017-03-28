@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -152,37 +154,38 @@ public class JugarMundoController implements Initializable {
 //        }
     }
     
-    public Nodo create_nodo(int i, Nodo nodo_expandir){
-        Nodo hijo = new Nodo(nodo_expandir.getPuzzle(), nodo_expandir, i, (nodo_expandir.getProfundidad() + 1), nodo_expandir.getCosto(), nodo_expandir.getIi(), nodo_expandir.getIj(), nodo_expandir.getPi(), nodo_expandir.getPj(), nodo_expandir.getDisparos());
-        Integer verificar = hijo.mover(i);
-        if(verificar == 0){
+    public Nodo create_nodo(int i, Nodo nodo_expandir) throws CloneNotSupportedException{
+            Nodo nodo_i = (Nodo) nodo_expandir.clone();
+            Nodo hijo = new Nodo(nodo_i.getPuzzle(), nodo_i, i, (nodo_i.getProfundidad() + 1), nodo_i.getCosto(), nodo_i.getIi(), nodo_i.getIj(), nodo_i.getPi(), nodo_i.getPj(), nodo_i.getDisparos());
+            Integer verificar = hijo.mover(i);
+            if(verificar == 0){
+                return hijo;
+            }
+            if(verificar == 1){
+                return null;
+            }
+            System.out.println(" ");
+            hijo.verPuzzle();
+            System.out.println(" ");
+            System.out.println("puzzle original movido");
+            nodo_expandir.verPuzzle();
+            System.out.println(" ");
             return hijo;
-        }
-        if(verificar == 1){
-            return null;
-        }
-        System.out.println(" ");
-        hijo.verPuzzle();
-        System.out.println(" ");
-        System.out.println("puzzle original movido");
-        nodo_expandir.verPuzzle();
-        System.out.println(" ");
-        return hijo;
     }
     
      public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
-        cola.add(nodo_padre);
+        cola.add((Nodo) nodo_padre.clone());
         Nodo solucion_nodo = null;
         while (!cola.isEmpty()) {
             Nodo nodo_j = cola.remove(0);
             for (int i = 0; i < 4; i++) {
-                Nodo nh = create_nodo(i, nodo_j);
+                Nodo nh = create_nodo(i, (Nodo) nodo_j.clone());
                 if (nh != null && nh != nodo_j.getPadre()) {
                     System.out.println(" ");
                     System.out.println("puzzle nh");
-                    nh.verPuzzle();
+                    nodo_j.verPuzzle();
                     System.out.println(" ");
                     if (nh.equals(nodo_j)) {
                         solucion_nodo = nh;
