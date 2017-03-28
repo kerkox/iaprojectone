@@ -15,10 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Antonio
- */
 public class NavigatorController {
 
     private final Stage stage;
