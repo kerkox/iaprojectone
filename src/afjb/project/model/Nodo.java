@@ -4,7 +4,7 @@ import afjb.project.event.CambioEvent;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 
-public class Nodo implements Cloneable{
+public class Nodo implements Cloneable {
 
     public static final byte FREE = 0;
     public static final byte OBSTACULO = 1;
@@ -43,24 +43,24 @@ public class Nodo implements Cloneable{
     }
 
     public Integer mover(int direccion) {
-        
+
         System.out.println("puzzle original");
         this.verPuzzle();
         System.out.println(" ");
-        
+
         System.out.println("dirreccion de movimien " + direccion);
-        
+
         System.out.println("valor de move posi" + move_position);
-        
+
         if (get(pi, pj) == get(ii, ij)) {
             System.out.println("encontro la meta");
             return 0;
         }
-        
+
         System.out.println("valor de pj" + this.pj);
-        
+
         System.out.println("valor de pi" + this.pi);
-        
+
         System.out.println("puzle hijo");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -92,9 +92,9 @@ public class Nodo implements Cloneable{
                 this.pi++;
                 break;
         }
-        
+
         System.out.println("valor de pj movido" + this.pj);
-        
+
         System.out.println("valor de pi movido" + this.pi);
 
         if (this.pj == this.getCols()) {
@@ -142,28 +142,27 @@ public class Nodo implements Cloneable{
 //            alerta.setHeaderText(msg);
 //            alerta.showAndWait();
 //        }
-        
         puzzle[oldPi][oldPj] = this.move_position;
-        
+
         this.move_position = this.puzzle[pi][pj];
 
         System.out.println("valor nuevo de move position " + puzzle[this.pi][this.pj]);
-        
+
         byte nuevo_move_position = puzzle[this.pi][this.pj];
-        
+
         puzzle[this.pi][this.pj] = ROBOT_SAPIENS;
-        
+
         return 2;
 
     }
-    
-    public Nodo create_nodo(int i){
+
+    public Nodo create_nodo(int i) {
         Nodo hijo = new Nodo(this.puzzle, this, i, (this.profundidad++), this.costo, this.ii, this.ij, this.pi, this.pj, this.disparos);
         Integer verificar = hijo.mover(i);
-        if(verificar == 0){
+        if (verificar == 0) {
             return hijo;
         }
-        if(verificar == 1){
+        if (verificar == 1) {
             return null;
         }
         System.out.println(" ");
@@ -198,8 +197,6 @@ public class Nodo implements Cloneable{
     public int getDisparos() {
         return disparos;
     }
-    
-    
 
     public int getIi() {
         return ii;
@@ -208,7 +205,6 @@ public class Nodo implements Cloneable{
     public int getIj() {
         return ij;
     }
-    
 
     public void profundidad() {
         System.out.println("La profundidad del nodo es " + profundidad);
@@ -242,8 +238,6 @@ public class Nodo implements Cloneable{
         Nodo clon = new Nodo(this.puzzle, this.padre, this.operador, this.profundidad, this.costo, this.ii, this.ij, this.pi, this.pj, this.disparos);
         return clon;
     }
-    
-    
 
 //    public ArrayList<Nodo> recorridoAnchura(Nodo nodoI) {
 //        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
@@ -277,10 +271,14 @@ public class Nodo implements Cloneable{
                     System.out.println("puzzle nh");
                     nh.verPuzzle();
                     System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("nodo padre");
+                    nh.getPadre().verPuzzle();
+                    System.out.println(" ");
                     if (nh.equals(nodo_j)) {
                         solucion_nodo = nh;
                         break;
-                    }else{
+                    } else {
                         cola.add(nh);
                     }
                 }

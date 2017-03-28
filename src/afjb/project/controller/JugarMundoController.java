@@ -187,6 +187,10 @@ public class JugarMundoController implements Initializable {
                     System.out.println("puzzle nh");
                     nodo_j.verPuzzle();
                     System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("nodo padre");
+                    System.out.println(" ");
+                    nh.getPadre().verPuzzle();
                     if (nh.equals(nodo_j)) {
                         solucion_nodo = nh;
                         break;
