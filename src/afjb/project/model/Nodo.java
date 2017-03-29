@@ -47,32 +47,32 @@ public class Nodo implements Cloneable {
 
     public Integer mover(int direccion) {
 
-        System.out.println("puzzle original");
-        this.verPuzzle();
-        System.out.println(" ");
+//        System.out.println("puzzle original");
+//        this.verPuzzle();
+//        System.out.println(" ");
 
-        System.out.println("dirreccion de movimien " + direccion);
-
-        System.out.println("valor de move posi" + move_position);
+//        System.out.println("dirreccion de movimien " + direccion);
+//
+//        System.out.println("valor de move posi" + move_position);
 
         if (get(pi, pj) == get(ii, ij)) {
             System.out.println("encontro la meta");
             return 0;
         }
+//
+//        System.out.println("valor de pj" + this.pj);
+//
+//        System.out.println("valor de pi" + this.pi);
 
-        System.out.println("valor de pj" + this.pj);
-
-        System.out.println("valor de pi" + this.pi);
-
-        System.out.println("puzle hijo");
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                System.out.print(" " + this.puzzle[i][j]);
-            }
-
-            System.out.println(" ");
-        }
-        System.out.println(" ");
+//        System.out.println("puzle hijo");
+//        for (int i = 0; i < 10; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                System.out.print(" " + this.puzzle[i][j]);
+//            }
+//
+//            System.out.println(" ");
+//        }
+//        System.out.println(" ");
 
         int oldPj = this.pj;
         int oldPi = this.pi;
@@ -96,27 +96,27 @@ public class Nodo implements Cloneable {
                 break;
         }
 
-        System.out.println("valor de pj movido" + this.pj);
-
-        System.out.println("valor de pi movido" + this.pi);
+//        System.out.println("valor de pj movido" + this.pj);
+//
+//        System.out.println("valor de pi movido" + this.pi);
 
         if (this.pj == this.getCols()) {
-            System.out.println("hpj sobre paso las columnas");
+//            System.out.println("hpj sobre paso las columnas");
             return 1;
         }
 
         if (this.pj == -1) {
-            System.out.println("hpj es menor que las columas");
+//            System.out.println("hpj es menor que las columas");
             return 1;
         }
 
         if (this.pi == this.getRows()) {
-            System.out.println("hpi sobre paso las filas");
+//            System.out.println("hpi sobre paso las filas");
             return 1;
         }
 
         if (this.pi == -1) {
-            System.out.println("hpi es menor que las filas ");
+//            System.out.println("hpi es menor que las filas ");
             return 1;
         }
 
@@ -145,11 +145,12 @@ public class Nodo implements Cloneable {
 //            alerta.setHeaderText(msg);
 //            alerta.showAndWait();
 //        }
-        puzzle[oldPi][oldPj] = this.move_position;
 
         this.move_position = this.puzzle[pi][pj];
+        
+        puzzle[oldPi][oldPj] = this.move_position;
 
-        System.out.println("valor nuevo de move position " + puzzle[this.pi][this.pj]);
+//        System.out.println("valor nuevo de move position " + puzzle[this.pi][this.pj]);
 
         byte nuevo_move_position = puzzle[this.pi][this.pj];
 
@@ -260,6 +261,19 @@ public class Nodo implements Cloneable {
 //        }
 //        return recorridos;
 //    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Nodo compr = (Nodo) obj;
+        if(this.getPuzzle().equals(compr.getPuzzle())){
+            return true;
+        }
+        return false;
+    }
+    
+    
+    
+    
     public ArrayList<Nodo> recorridoAnchura() throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();

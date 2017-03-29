@@ -44,7 +44,7 @@ public class JugarMundoController implements Initializable {
 
     @FXML
     private Pane mundo_juego_pan;
-    
+
     @FXML
     private JFXButton btn_aplica_algorithm;
 
@@ -53,8 +53,7 @@ public class JugarMundoController implements Initializable {
     public byte[][] envivorement;
 
     private NavigatorController navigatorController;
-    
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.option_algotihm.getItems().add(new Label("Busqueda Informada"));
@@ -64,7 +63,7 @@ public class JugarMundoController implements Initializable {
         this.mundo_juego_pan.setFocusTraversable(true);
         dibujar();
     }
-    
+
     @FXML
     void animation_test(KeyEvent evt) {
 //        if(evt.getCode().equals(evt.getCode().UP)){
@@ -81,9 +80,9 @@ public class JugarMundoController implements Initializable {
 //        }
 //        dibujar();
     }
-    
+
     public void dibujar() {
-        
+
         mundo_juego_pan.getChildren().removeAll(mundo_juego_pan.getChildren());
 
         for (int j = 0; j < 10; j++) {
@@ -143,9 +142,9 @@ public class JugarMundoController implements Initializable {
             mundo_juego_pan.getChildren().add(line_pro_2);
         }
     }
-    
+
     @FXML
-    public void aplicar_busqueda() throws CloneNotSupportedException{
+    public void aplicar_busqueda() throws CloneNotSupportedException {
         Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
         recorridoAnchura(nodo_raiz);
 //        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);
@@ -153,27 +152,41 @@ public class JugarMundoController implements Initializable {
 //            recorrido.verPuzzle();
 //        }
     }
-    
-    public Nodo create_nodo(int i, Nodo nodo_expandir) throws CloneNotSupportedException{
-            Nodo nodo_i = (Nodo) nodo_expandir.clone();
-            Nodo hijo = new Nodo(nodo_i.getPuzzle(), nodo_i, i, (nodo_i.getProfundidad() + 1), nodo_i.getCosto(), nodo_i.getIi(), nodo_i.getIj(), nodo_i.getPi(), nodo_i.getPj(), nodo_i.getDisparos());
-            Integer verificar = hijo.mover(i);
-            if(verificar == 0){
-                return hijo;
-            }
-            if(verificar == 1){
-                return null;
-            }
-            System.out.println(" ");
-            hijo.verPuzzle();
-            System.out.println(" ");
-            System.out.println("puzzle original movido");
-            nodo_expandir.verPuzzle();
-            System.out.println(" ");
+
+    public Nodo create_nodo(int i, Nodo nodo_expandir) throws CloneNotSupportedException {
+        Nodo nodo_i = (Nodo) nodo_expandir.clone();
+        Nodo hijo = new Nodo(nodo_i.getPuzzle(), nodo_i, i, (nodo_i.getProfundidad() + 1), nodo_i.getCosto(), nodo_i.getIi(), nodo_i.getIj(), nodo_i.getPi(), nodo_i.getPj(), nodo_i.getDisparos());
+        Integer verificar = hijo.mover(i);
+        if (verificar == 0) {
             return hijo;
+        }
+        if (verificar == 1) {
+            return null;
+        }
+        System.out.println("nodo padre");
+        nodo_expandir.verPuzzle();
+        System.out.println(" ");
+        System.out.println("puzzle hijo movido");
+        hijo.verPuzzle();
+        System.out.println(" ");
+        return hijo;
     }
-    
-     public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
+
+    public boolean esta_en_arbol(Nodo ng) {
+        if (ng.getPadre() == null) {
+            return false;
+        }
+        Nodo nd = ng.getPadre();
+        while (nd != null) {
+            if (ng.equals(nd)) {
+                return true;
+            }
+            nd = nd.getPadre();
+        }
+        return false;
+    }
+
+    public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
         cola.add((Nodo) nodo_padre.clone());
@@ -182,20 +195,22 @@ public class JugarMundoController implements Initializable {
             Nodo nodo_j = cola.remove(0);
             for (int i = 0; i < 4; i++) {
                 Nodo nh = create_nodo(i, (Nodo) nodo_j.clone());
-                if (nh != null && nh != nodo_j.getPadre()) {
-                    System.out.println(" ");
-                    System.out.println("puzzle nh");
-                    nodo_j.verPuzzle();
-                    System.out.println(" ");
-                    System.out.println(" ");
-                    System.out.println("nodo padre");
-                    System.out.println(" ");
-                    nh.getPadre().verPuzzle();
-                    if (nh.equals(nodo_j)) {
-                        solucion_nodo = nh;
-                        break;
-                    }else{
-                        cola.add(nh);
+                if (nh != null) {
+                    if (esta_en_arbol(nh) == false) {
+//                        System.out.println(" ");
+//                        System.out.println("puzzle nh");
+//                        nodo_j.verPuzzle();
+//                        System.out.println(" ");
+//                        System.out.println(" ");
+//                        System.out.println("nodo padre");
+//                        System.out.println(" ");
+//                        nh.getPadre().verPuzzle();
+                        if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                            solucion_nodo = nh;
+                            break;
+                        } else {
+                            cola.add(nh);
+                        }
                     }
                 }
             }
