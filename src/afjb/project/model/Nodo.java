@@ -30,7 +30,10 @@ public class Nodo implements Cloneable {
     public boolean visitiadoAnchura[];
 
     public Nodo(byte[][] puzzle, Nodo padre, int operador, int profundidad, int costo, int ii, int ij, int pi, int pj, int disparos) {
-        this.puzzle = puzzle;
+        this.puzzle = new byte[puzzle.length][];
+        for (int i = 0; i < 10; i++) {
+            this.puzzle[i] = puzzle[i].clone();
+        }
         this.padre = padre;
         this.operador = operador;
         this.profundidad = profundidad;
