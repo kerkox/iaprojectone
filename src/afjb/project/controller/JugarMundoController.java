@@ -61,7 +61,11 @@ public class JugarMundoController implements Initializable {
         this.modelo = Model_Mundo.getInstance();
         this.envivorement = modelo.getEnvironment();
         this.mundo_juego_pan.setFocusTraversable(true);
-        dibujar();
+        try {
+            dibujar();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JugarMundoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -81,7 +85,7 @@ public class JugarMundoController implements Initializable {
 //        dibujar();
     }
 
-    public void dibujar() {
+    public void dibujar() throws InterruptedException {
 
         mundo_juego_pan.getChildren().removeAll(mundo_juego_pan.getChildren());
 
@@ -141,12 +145,21 @@ public class JugarMundoController implements Initializable {
             mundo_juego_pan.getChildren().add(line_pro_1);
             mundo_juego_pan.getChildren().add(line_pro_2);
         }
+        Thread.sleep(1000);
     }
 
     @FXML
-    public void aplicar_busqueda() throws CloneNotSupportedException {
+    public void aplicar_busqueda() throws CloneNotSupportedException, InterruptedException {
         Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
-        recorridoAnchura(nodo_raiz);
+        ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
+        for (int i = (soluciones.size() - 1); i > -1; i--) {
+            int operador = soluciones.get(i).getOperador();
+            System.out.println("operador " + operador);
+            if (operador != -1) {
+                this.modelo.move(operador);
+                dibujar();
+            }
+        }
 //        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);
 //        for (Nodo recorrido : recorridos) {
 //            recorrido.verPuzzle();
@@ -189,14 +202,27 @@ public class JugarMundoController implements Initializable {
     public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
+        ArrayList<Nodo> expandidos = new ArrayList<>();
         cola.add((Nodo) nodo_padre.clone());
         Nodo solucion_nodo = null;
         while (!cola.isEmpty()) {
             Nodo nodo_j = cola.remove(0);
             for (int i = 0; i < 4; i++) {
+                expandidos.add(nodo_j);
                 Nodo nh = create_nodo(i, (Nodo) nodo_j.clone());
                 if (nh != null) {
-                    if (esta_en_arbol(nh) == false) {
+                    if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                        System.out.println("solucion encontrada 1");
+                        solucion_nodo = nh;
+                        cola.clear();
+                        break;
+                    }
+                    if (nh.equals(nh.getPadre())) {
+                        System.out.println("encontro la solucion");
+                        break;
+                    }
+                    if (!expandidos.contains(nh)) {
+                        if (esta_en_arbol(nh) == false) {
 //                        System.out.println(" ");
 //                        System.out.println("puzzle nh");
 //                        nodo_j.verPuzzle();
@@ -205,26 +231,28 @@ public class JugarMundoController implements Initializable {
 //                        System.out.println("nodo padre");
 //                        System.out.println(" ");
 //                        nh.getPadre().verPuzzle();
-                        if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
-                            solucion_nodo = nh;
-                            break;
-                        } else {
-                            cola.add(nh);
+                            if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                                System.out.println("solucion encontrada");
+                                solucion_nodo = nh;
+                                break;
+                            } else {
+                                cola.add(nh);
+                            }
                         }
                     }
                 }
             }
         }
-//        boolean termino = false;
+        boolean termino = false;
         recorridos.add(solucion_nodo);
-//        while (termino == false) {
-//            solucion_nodo = solucion_nodo.getPadre();
-//            if (solucion_nodo == null) {
-//                termino = true;
-//            } else {
-//                recorridos.add(solucion_nodo);
-//            }
-//        }
+        while (termino == false) {
+            solucion_nodo = solucion_nodo.getPadre();
+            if (solucion_nodo == null) {
+                termino = true;
+            } else {
+                recorridos.add(solucion_nodo);
+            }
+        }
         return recorridos;
     }
 

@@ -193,13 +193,13 @@ public class Model_Mundo {
         }
 
         if (this.get(pi, pj) == ITEM) {
-            this.notifyChange(new CambioEvent(this));
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
-            String msg = "ROBOT SAPIENS A ENCONTRADO LA META ¡FELICITACIONES!";
-            alerta.setAlertType(Alert.AlertType.INFORMATION);
-            alerta.setHeaderText(msg);
-            alerta.showAndWait();
+//            this.notifyChange(new CambioEvent(this));
+//            Alert alerta = new Alert(Alert.AlertType.ERROR);
+//            alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
+//            String msg = "ROBOT SAPIENS A ENCONTRADO LA META ¡FELICITACIONES!";
+//            alerta.setAlertType(Alert.AlertType.INFORMATION);
+//            alerta.setHeaderText(msg);
+//            alerta.showAndWait();
         }
         
         this.move_position = this.environment[pi][pj];
