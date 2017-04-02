@@ -107,33 +107,6 @@ public class Model_Mundo {
             
         }else {
             
-//             String str = bundle.getString("level" + level);
-//            //str.split = le quita los espacios a la cadena y se convierte en una matriz quitandole los espacios.
-//            String[] strEnv = str.split(" ");
-//            /*System.out.println(str);
-//             System.out.println(Arrays.toString(strEnv));*/
-//
-//            rows = Integer.parseInt(strEnv[0]);
-//            cols = Integer.parseInt(strEnv[1]);
-//
-//            pi = Integer.parseInt(strEnv[2]);
-//            pj = Integer.parseInt(strEnv[3]);
-//
-//            cc = Integer.parseInt(strEnv[4]);
-//
-//            int k = 5;
-//
-//            this.environment = new byte[rows][cols];
-//
-//            for (int i = 0; i < rows; i++) {
-//                for (int j = 0; j < cols; j++) {
-//                    environment[i][j] = Byte.parseByte(strEnv[k]);
-//                    k++;
-//                }
-//            }
-//
-//            this.environment[pi][pj] = PACMAN;
-            
         }
     }
 
@@ -151,6 +124,7 @@ public class Model_Mundo {
     }
 
     public void move(int direction) {
+        
         this.environment[pi][pj] = this.move_position;
 
         int oldPj = pj;

@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -167,13 +168,23 @@ public class JugarMundoController implements Initializable {
 
     @FXML
     public void aplicar_busqueda() throws CloneNotSupportedException, InterruptedException {
-        System.out.println(this.option_selected_algorithm.getSelectionModel().getSelectedItem());
-        Label seleccion = (Label) this.option_selected_algorithm.getSelectionModel().getSelectedItem();
-        System.out.println(this.option_selected_algorithm.getSelectionModel().getSelectedItem());
-        if (seleccion.getText().equals("Amplitud")) {
-            Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
-            ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
-            solucion_dibujo(soluciones);
+        Object seleccion = this.option_selected_algorithm.getSelectionModel().getSelectedItem();
+        if (seleccion != null) {
+            if (seleccion.equals("Amplitud")) {
+                Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
+                ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
+                solucion_dibujo(soluciones);
+            }
+            if (seleccion.equals("Costo Uniforme")) {
+                Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
+                ArrayList<Nodo> soluciones = recorridoCosto(nodo_raiz);
+                solucion_dibujo(soluciones);
+            }
+        }else{
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
+            alerta.setHeaderText("por favor seleccione un algoritmo de busqueda");
+            alerta.showAndWait();
         }
     }
 
@@ -195,6 +206,19 @@ public class JugarMundoController implements Initializable {
         System.out.println(" ");
         return hijo;
     }
+    
+    public int nodo_menor(ArrayList<Nodo> nodos){
+         int posicion = 0;
+        Nodo menor = nodos.get(0);
+        for (int i = 0; i < nodos.size(); i++) {
+            Nodo nd_comparar = nodos.get(i);
+            if(menor.getCosto() > nd_comparar.getCosto()){
+                menor = nd_comparar;
+                posicion = i;
+            }
+        }
+        return posicion;
+    }
 
     public boolean esta_en_arbol(Nodo ng) {
         if (ng.getPadre() == null) {
@@ -210,6 +234,57 @@ public class JugarMundoController implements Initializable {
         return false;
     }
 
+    public ArrayList<Nodo> recorridoCosto(Nodo nodo_padre) throws CloneNotSupportedException {
+        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
+        ArrayList<Nodo> cola = new ArrayList<Nodo>();
+        ArrayList<Nodo> expandidos = new ArrayList<>();
+        cola.add((Nodo) nodo_padre.clone());
+        Nodo solucion_nodo = null;
+        while (!cola.isEmpty()) {
+            int posicion_nodo = nodo_menor(cola);
+            Nodo nodo_j = cola.remove(posicion_nodo);
+            for (int i = 0; i < 4; i++) {
+                expandidos.add(nodo_j);
+                Nodo nh = create_nodo(i, (Nodo) nodo_j.clone());
+                if (nh != null) {
+                    if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                        System.out.println("solucion encontrada 1");
+                        solucion_nodo = nh;
+                        cola.clear();
+                        break;
+                    }
+                    if (nh.equals(nh.getPadre())) {
+                        System.out.println("encontro la solucion");
+                        break;
+                    }
+                    if (!expandidos.contains(nh)) {
+                        if (esta_en_arbol(nh) == false) {
+                            if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                                System.out.println("solucion encontrada");
+                                solucion_nodo = nh;
+                                break;
+                            } else {
+                                cola.add(nh);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("costo de la solucion: " + solucion_nodo.getCosto());
+        boolean termino = false;
+        recorridos.add(solucion_nodo);
+        while (termino == false) {
+            solucion_nodo = solucion_nodo.getPadre();
+            if (solucion_nodo == null) {
+                termino = true;
+            } else {
+                recorridos.add(solucion_nodo);
+            }
+        }
+        return recorridos;
+    }
+    
     public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
@@ -246,6 +321,7 @@ public class JugarMundoController implements Initializable {
                 }
             }
         }
+        System.out.println("costo de la solucion: " + solucion_nodo.getCosto());
         boolean termino = false;
         recorridos.add(solucion_nodo);
         while (termino == false) {

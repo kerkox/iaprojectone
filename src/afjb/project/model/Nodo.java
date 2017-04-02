@@ -119,24 +119,6 @@ public class Nodo implements Cloneable {
 
     }
 
-    public Nodo create_nodo(int i) {
-        Nodo hijo = new Nodo(this.puzzle, this, i, (this.profundidad++), this.costo, this.ii, this.ij, this.pi, this.pj, this.disparos);
-        Integer verificar = hijo.mover(i);
-        if (verificar == 0) {
-            return hijo;
-        }
-        if (verificar == 1) {
-            return null;
-        }
-        System.out.println(" ");
-        hijo.verPuzzle();
-        System.out.println(" ");
-        System.out.println("puzzle original movido");
-        this.verPuzzle();
-        System.out.println(" ");
-        return hijo;
-    }
-
     public byte getMove_position() {
         return move_position;
     }
@@ -169,7 +151,7 @@ public class Nodo implements Cloneable {
         return ij;
     }
 
-    public void profundidad() {
+    public void prin_profundidad() {
         System.out.println("La profundidad del nodo es " + profundidad);
     }
 
