@@ -170,17 +170,20 @@ public class JugarMundoController implements Initializable {
     public void aplicar_busqueda() throws CloneNotSupportedException, InterruptedException {
         Object seleccion = this.option_selected_algorithm.getSelectionModel().getSelectedItem();
         if (seleccion != null) {
+            Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
             if (seleccion.equals("Amplitud")) {
-                Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
                 ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
                 solucion_dibujo(soluciones);
             }
             if (seleccion.equals("Costo Uniforme")) {
-                Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
                 ArrayList<Nodo> soluciones = recorridoCosto(nodo_raiz);
                 solucion_dibujo(soluciones);
             }
-        }else{
+            if (seleccion.equals("Profundidad Evitando Ciclos")) {
+                ArrayList<Nodo> soluciones = recorridoProfundidad(nodo_raiz);
+                solucion_dibujo(soluciones);
+            }
+        } else {
             Alert alerta = new Alert(Alert.AlertType.ERROR);
             alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
             alerta.setHeaderText("por favor seleccione un algoritmo de busqueda");
@@ -206,13 +209,13 @@ public class JugarMundoController implements Initializable {
         System.out.println(" ");
         return hijo;
     }
-    
-    public int nodo_menor(ArrayList<Nodo> nodos){
-         int posicion = 0;
+
+    public int nodo_menor(ArrayList<Nodo> nodos) {
+        int posicion = 0;
         Nodo menor = nodos.get(0);
         for (int i = 0; i < nodos.size(); i++) {
             Nodo nd_comparar = nodos.get(i);
-            if(menor.getCosto() > nd_comparar.getCosto()){
+            if (menor.getCosto() > nd_comparar.getCosto()) {
                 menor = nd_comparar;
                 posicion = i;
             }
@@ -284,7 +287,66 @@ public class JugarMundoController implements Initializable {
         }
         return recorridos;
     }
-    
+
+    public ArrayList<Nodo> combinar_lista(ArrayList<Nodo> cola_m, ArrayList<Nodo> cola_n) {
+        ArrayList<Nodo> cola_retorno = new ArrayList<>();
+        for (int i = (cola_m.size() - 1); i > -1; i--) {
+            cola_retorno.add(cola_m.get(i));
+        }
+        cola_retorno.addAll(cola_n);
+        return cola_retorno;
+    }
+
+    public ArrayList<Nodo> recorridoProfundidad(Nodo nodo_padre) throws CloneNotSupportedException {
+        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
+        ArrayList<Nodo> cola = new ArrayList<Nodo>();
+        ArrayList<Nodo> expandidos = new ArrayList<>();
+        cola.add((Nodo) nodo_padre.clone());
+        Nodo solucion_nodo = null;
+        while (!cola.isEmpty()) {
+            int posicion_nodo = nodo_menor(cola);
+            Nodo nodo_j = cola.remove(posicion_nodo);
+            ArrayList<Nodo> nodos_profundidad = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                expandidos.add(nodo_j);
+                Nodo nh = create_nodo(i, (Nodo) nodo_j.clone());
+                if (nh != null) {
+                    if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                        System.out.println("solucion encontrada 1");
+                        solucion_nodo = nh;
+                        cola.clear();
+                        nodos_profundidad.clear();
+                        break;
+                    }
+                    if (!expandidos.contains(nh)) {
+                        if (esta_en_arbol(nh) == false) {
+                            if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
+                                System.out.println("solucion encontrada");
+                                solucion_nodo = nh;
+                                break;
+                            } else {
+                                nodos_profundidad.add(nh);
+                            }
+                        }
+                    }
+                }
+            }
+            cola = combinar_lista(nodos_profundidad, cola);
+        }
+        System.out.println("costo de la solucion: " + solucion_nodo.getCosto());
+        boolean termino = false;
+        recorridos.add(solucion_nodo);
+        while (termino == false) {
+            solucion_nodo = solucion_nodo.getPadre();
+            if (solucion_nodo == null) {
+                termino = true;
+            } else {
+                recorridos.add(solucion_nodo);
+            }
+        }
+        return recorridos;
+    }
+
     public ArrayList<Nodo> recorridoAnchura(Nodo nodo_padre) throws CloneNotSupportedException {
         ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
         ArrayList<Nodo> cola = new ArrayList<Nodo>();
