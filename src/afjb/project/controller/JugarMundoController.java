@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -70,19 +72,6 @@ public class JugarMundoController implements Initializable {
 
     @FXML
     void animation_test(KeyEvent evt) {
-//        if(evt.getCode().equals(evt.getCode().UP)){
-//            this.modelo.move(this.modelo.UP);
-//        }
-//        if(evt.getCode().equals(evt.getCode().DOWN)){
-//            this.modelo.move(this.modelo.DOWN);
-//        }
-//        if(evt.getCode().equals(evt.getCode().RIGHT)){
-//            this.modelo.move(this.modelo.RIGHT);
-//        }
-//        if(evt.getCode().equals(evt.getCode().LEFT)){
-//            this.modelo.move(this.modelo.LEFT);
-//        }
-//        dibujar();
     }
 
     public void dibujar() throws InterruptedException {
@@ -98,31 +87,31 @@ public class JugarMundoController implements Initializable {
                         cuadro.setX(k * 30);
                         cuadro.setY(j * 30);
                         mundo_juego_pan.getChildren().add(cuadro);
-                        break;
+                        continue;
                     case 1:
                         cuadro.setFill(Color.GREEN);
                         cuadro.setX(k * 30);
                         cuadro.setY(j * 30);
                         mundo_juego_pan.getChildren().add(cuadro);
-                        break;
+                        continue;
                     case 2:
                         cuadro.setFill(Color.BLUE);
                         cuadro.setX(k * 30);
                         cuadro.setY(j * 30);
                         mundo_juego_pan.getChildren().add(cuadro);
-                        break;
+                        continue;
                     case 3:
                         cuadro.setFill(Color.RED);
                         cuadro.setX(k * 30);
                         cuadro.setY(j * 30);
                         mundo_juego_pan.getChildren().add(cuadro);
-                        break;
+                        continue;
                     case 4:
                         cuadro.setFill(Color.YELLOW);
                         cuadro.setX(k * 30);
                         cuadro.setY(j * 30);
                         mundo_juego_pan.getChildren().add(cuadro);
-                        break;
+                        continue;
 
                 }
             }
@@ -133,9 +122,6 @@ public class JugarMundoController implements Initializable {
 
         mundo_juego_pan.getChildren().add(linea_prueba1);
         mundo_juego_pan.getChildren().add(linea_prueba2);
-//        numero_disparos_pan.setText(Integer.toString(disparos));
-//        no_disparos_label.setVisible(true);
-//        btn_jugar.setDisable(false);
 
         for (int h = 1; h <= 10; h++) {
             Line line_pro_1 = new Line((h * 30), 0, (h * 30), 300);
@@ -145,25 +131,50 @@ public class JugarMundoController implements Initializable {
             mundo_juego_pan.getChildren().add(line_pro_1);
             mundo_juego_pan.getChildren().add(line_pro_2);
         }
-        Thread.sleep(1000);
+    }
+
+    public void solucion_dibujo(ArrayList<Nodo> soluciones) {
+        Task<Integer> task = new Task<Integer>() {
+            @Override
+            protected Integer call() throws Exception {
+                Integer mn = 1;
+                for (int i = (soluciones.size() - 1); i > -1; i--) {
+                    Thread.sleep(1000);
+                    int operador = soluciones.get(i).getOperador();
+                    System.out.println("operador " + operador);
+                    if (operador != -1) {
+                        modelo.move(operador);
+                    }
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                dibujar();
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(JugarMundoController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                }
+                return mn;
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
     }
 
     @FXML
     public void aplicar_busqueda() throws CloneNotSupportedException, InterruptedException {
-        Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
-        ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
-        for (int i = (soluciones.size() - 1); i > -1; i--) {
-            int operador = soluciones.get(i).getOperador();
-            System.out.println("operador " + operador);
-            if (operador != -1) {
-                this.modelo.move(operador);
-                dibujar();
-            }
+        System.out.println(this.option_selected_algorithm.getSelectionModel().getSelectedItem());
+        Label seleccion = (Label) this.option_selected_algorithm.getSelectionModel().getSelectedItem();
+        System.out.println(this.option_selected_algorithm.getSelectionModel().getSelectedItem());
+        if (seleccion.getText().equals("Amplitud")) {
+            Nodo nodo_raiz = new Nodo(modelo.getEnvironment(), null, -1, 0, 0, modelo.getIi(), modelo.getIj(), modelo.getPi(), modelo.getPj(), modelo.getDisparos());
+            ArrayList<Nodo> soluciones = recorridoAnchura(nodo_raiz);
+            solucion_dibujo(soluciones);
         }
-//        ArrayList<Nodo> recorridos = nodo_raiz.recorridoAnchura(nodo_raiz);
-//        for (Nodo recorrido : recorridos) {
-//            recorrido.verPuzzle();
-//        }
     }
 
     public Nodo create_nodo(int i, Nodo nodo_expandir) throws CloneNotSupportedException {
@@ -223,14 +234,6 @@ public class JugarMundoController implements Initializable {
                     }
                     if (!expandidos.contains(nh)) {
                         if (esta_en_arbol(nh) == false) {
-//                        System.out.println(" ");
-//                        System.out.println("puzzle nh");
-//                        nodo_j.verPuzzle();
-//                        System.out.println(" ");
-//                        System.out.println(" ");
-//                        System.out.println("nodo padre");
-//                        System.out.println(" ");
-//                        nh.getPadre().verPuzzle();
                             if (nh.getPi() == nh.getIi() && nh.getIj() == nh.getPj()) {
                                 System.out.println("solucion encontrada");
                                 solucion_nodo = nh;

@@ -47,32 +47,10 @@ public class Nodo implements Cloneable {
 
     public Integer mover(int direccion) {
 
-//        System.out.println("puzzle original");
-//        this.verPuzzle();
-//        System.out.println(" ");
-
-//        System.out.println("dirreccion de movimien " + direccion);
-//
-//        System.out.println("valor de move posi" + move_position);
-
         if (get(pi, pj) == get(ii, ij)) {
             System.out.println("encontro la meta");
             return 0;
         }
-//
-//        System.out.println("valor de pj" + this.pj);
-//
-//        System.out.println("valor de pi" + this.pi);
-
-//        System.out.println("puzle hijo");
-//        for (int i = 0; i < 10; i++) {
-//            for (int j = 0; j < 10; j++) {
-//                System.out.print(" " + this.puzzle[i][j]);
-//            }
-//
-//            System.out.println(" ");
-//        }
-//        System.out.println(" ");
 
         int oldPj = this.pj;
         int oldPi = this.pi;
@@ -96,27 +74,19 @@ public class Nodo implements Cloneable {
                 break;
         }
 
-//        System.out.println("valor de pj movido" + this.pj);
-//
-//        System.out.println("valor de pi movido" + this.pi);
-
         if (this.pj == this.getCols()) {
-//            System.out.println("hpj sobre paso las columnas");
             return 1;
         }
 
         if (this.pj == -1) {
-//            System.out.println("hpj es menor que las columas");
             return 1;
         }
 
         if (this.pi == this.getRows()) {
-//            System.out.println("hpi sobre paso las filas");
             return 1;
         }
 
         if (this.pi == -1) {
-//            System.out.println("hpi es menor que las filas ");
             return 1;
         }
 
@@ -137,20 +107,9 @@ public class Nodo implements Cloneable {
             return 1;
         }
 
-//        if (hijo_puzzle[hpi][hpj] == ITEM) {
-//            Alert alerta = new Alert(Alert.AlertType.ERROR);
-//            alerta.setTitle("Proyecto Inteteligencia Artificial 2017");
-//            String msg = "ROBOT SAPIENS A ENCONTRADO LA META ¡FELICITACIONES!";
-//            alerta.setAlertType(Alert.AlertType.INFORMATION);
-//            alerta.setHeaderText(msg);
-//            alerta.showAndWait();
-//        }
-
         this.move_position = this.puzzle[pi][pj];
         
         puzzle[oldPi][oldPj] = this.move_position;
-
-//        System.out.println("valor nuevo de move position " + puzzle[this.pi][this.pj]);
 
         byte nuevo_move_position = puzzle[this.pi][this.pj];
 
@@ -243,25 +202,6 @@ public class Nodo implements Cloneable {
         return clon;
     }
 
-//    public ArrayList<Nodo> recorridoAnchura(Nodo nodoI) {
-//        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
-//        visitiadoAnchura[0] = true;
-//        ArrayList<Nodo> cola = new ArrayList<Nodo>();
-//        recorridos.add(nodoI);
-//        cola.add(nodoI);
-//        while (!cola.isEmpty()) {
-//            int j = cola.remove(0);
-//            for (int i = 0; i < puzzle.length; i++) {
-//                if (puzzle[j][i] == 1 && !visitiadoAnchura[i]) {
-//                    cola.add(i);
-//                    recorridos.add(i);
-//                    visitiadoAnchura[i] = true;
-//                }
-//            }
-//        }
-//        return recorridos;
-//    }
-
     @Override
     public boolean equals(Object obj) {
         Nodo compr = (Nodo) obj;
@@ -269,49 +209,6 @@ public class Nodo implements Cloneable {
             return true;
         }
         return false;
-    }
-    
-    
-    
-    
-    public ArrayList<Nodo> recorridoAnchura() throws CloneNotSupportedException {
-        ArrayList<Nodo> recorridos = new ArrayList<Nodo>();
-        ArrayList<Nodo> cola = new ArrayList<Nodo>();
-        cola.add(this);
-        Nodo solucion_nodo = null;
-        while (!cola.isEmpty()) {
-            Nodo nodo_j = cola.remove(0);
-            for (int i = 0; i < 4; i++) {
-                Nodo nh = nodo_j.create_nodo(i);
-                if (nh != null && nh != nodo_j.getPadre()) {
-                    System.out.println(" ");
-                    System.out.println("puzzle nh");
-                    nh.verPuzzle();
-                    System.out.println(" ");
-                    System.out.println(" ");
-                    System.out.println("nodo padre");
-                    nh.getPadre().verPuzzle();
-                    System.out.println(" ");
-                    if (nh.equals(nodo_j)) {
-                        solucion_nodo = nh;
-                        break;
-                    } else {
-                        cola.add(nh);
-                    }
-                }
-            }
-        }
-//        boolean termino = false;
-        recorridos.add(solucion_nodo);
-//        while (termino == false) {
-//            solucion_nodo = solucion_nodo.getPadre();
-//            if (solucion_nodo == null) {
-//                termino = true;
-//            } else {
-//                recorridos.add(solucion_nodo);
-//            }
-//        }
-        return recorridos;
     }
 
     public Nodo getPadre() {
