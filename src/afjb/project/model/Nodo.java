@@ -108,7 +108,7 @@ public class Nodo implements Cloneable {
         }
 
         this.move_position = this.puzzle[pi][pj];
-        
+
         puzzle[oldPi][oldPj] = this.move_position;
 
         byte nuevo_move_position = puzzle[this.pi][this.pj];
@@ -187,7 +187,7 @@ public class Nodo implements Cloneable {
     @Override
     public boolean equals(Object obj) {
         Nodo compr = (Nodo) obj;
-        if(this.getPuzzle().equals(compr.getPuzzle())){
+        if (this.pi == compr.getPi() && this.pj == compr.getPj()) {
             return true;
         }
         return false;
