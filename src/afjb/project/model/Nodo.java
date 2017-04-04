@@ -28,6 +28,8 @@ public class Nodo implements Cloneable {
     public int costo;
     public int disparos;
     public boolean visitiadoAnchura[];
+    
+    public int hn;
 
     public Nodo(byte[][] puzzle, Nodo padre, int operador, int profundidad, int costo, int ii, int ij, int pi, int pj, int disparos) {
         this.puzzle = new byte[puzzle.length][];
@@ -106,6 +108,8 @@ public class Nodo implements Cloneable {
         if (puzzle[this.pi][this.pj] == OBSTACULO) {
             return 1;
         }
+        
+        this.hn = Math.abs((this.ii - this.pi)) + Math.abs((this.ij - this.pj)); 
 
         this.move_position = this.puzzle[pi][pj];
 
@@ -129,6 +133,10 @@ public class Nodo implements Cloneable {
 
     public int getPj() {
         return pj;
+    }
+
+    public int getHn() {
+        return hn;
     }
 
     public int getProfundidad() {
